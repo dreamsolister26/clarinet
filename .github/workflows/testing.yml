@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       repository: { description: 'Repo', required: true, default: 'dreamsolister26/kernel_xiaomi_earth' }
-      branch: { description: 'Branch', required: true, default: 'ksu-testing' }
+      branch: { description: 'Branch', required: true, default: 'staging/lineage-24.0' }
       defconfig: { description: 'Defconfig', required: true, default: 'earth_defconfig' }
-      zipname : { description: 'zip name', required: false, default: '-' }
-      clang : { description: 'Clang URL', required: true, default: 'https://github.com/dreamsolister26/clarinet/releases/download/16165221/clang-r614150.tar.gz' }
+      zipname : { description: 'zip name', required: false, default: 'testing-again' }
+      clang : { description: 'Clang URL', required: true, default: 'https://github.com/dreamsolister26/clarinet/releases/download/15544236/clang-r596125.tar.gz' }
       
 jobs:
   build:
