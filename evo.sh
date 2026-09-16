@@ -18,6 +18,12 @@ git clone https://github.com/LineageOS/android_hardware_xiaomi.git -b lineage-24
 git clone https://github.com/LineageOS/android_hardware_mediatek.git -b lineage-24.0 hardware/mediatek
 git clone https://github.com/LineageOS/android_device_mediatek_sepolicy_vndr.git -b lineage-24.0 device/mediatek/sepolicy_vndr
 
+# Patching build/soong
+cd build/soong
+wget https://raw.githubusercontent.com/dreamsolister26/clarinet/refs/heads/main/soong.patch
+patch -p1 < soong.patch && rm -f soong.patch
+cd ../..
+
 # build start
 . build/envsetup.sh
 
@@ -33,9 +39,11 @@ mka bacon
 echo "Upload to gofile will be started..."
 if [ -f out/target/product/earth/*202609*.zip ]; then
     wget https://raw.githubusercontent.com/lordgaruda/GoFile-Upload/refs/heads/master/upload.sh
-    chmod +x upload.sh ; ./upload.sh out/target/product/earth/*202609*.zip
-    echo "Upload Done!"
+    chmod +x upload.sh && ./upload.sh out/target/product/earth/*202609*.zip
+    cd build/soong && git restore . && cd ../..
+    echo "Upload & clean up Done!"
 else
+    cd build/soong && git restore . && cd ../..
     echo "No zip found in out/ dir!" 
     exit 1
 fi
