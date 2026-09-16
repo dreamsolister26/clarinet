@@ -3,7 +3,7 @@ name: Kernel Build
 on:
   workflow_dispatch:
     inputs:
-      repository: { description: 'Repo', required: true, default: 'MinamiQuartet/kernel_xiaomi_earth' }
+      repository: { description: 'Repo', required: true, default: 'MinamiQuartet/android_kernel_xiaomi_earth' }
       branch: { description: 'Branch', required: true, default: 'ksu-testing' }
       defconfig: { description: 'Defconfig', required: true, default: 'earth_defconfig' }
       zipname : { description: 'zip name', required: false, default: '-' }
