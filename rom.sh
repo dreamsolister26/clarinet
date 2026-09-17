@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # init & sync
-repo init -u https://github.com/sweet-bullet/pixelos_manifest.git -b seventeen --git-lfs --depth=1
+repo init -u https://github.com/sweet-bullet/evolution_manifest.git -b cnb --git-lfs --depth=1
 /opt/crave/resync.sh
 
 # device source
-git clone https://github.com/YoshikawaYuuko/android_device_xiaomi_earth.git -b PixelOS-17 device/xiaomi/earth
+git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b EvolutionX-17 device/xiaomi/earth
 
 # Setup build
 . build/envsetup.sh
@@ -15,8 +15,8 @@ export BUILD_USERNAME=kumiko
 export BUILD_HOSTNAME=kitauji_quartet
 
 # start build
-breakfast earth userdebug 
-m pixelos
+lunch lineage_earth-cp2a-userdebug 
+mka bacon
 
 # Upload
 echo "upload to gofile..."
