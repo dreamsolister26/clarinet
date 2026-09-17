@@ -11,7 +11,6 @@ repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For
 git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b lineage-24.0 device/xiaomi/earth
 git clone https://github.com/MinamiQuartet/vendor_xiaomi_earth.git -b lineage-24.0-ims vendor/xiaomi/earth --depth=1
 git clone https://github.com/MinamiQuartet/android_kernel_xiaomi_earth.git -b lineage-24.0 kernel/xiaomi/earth --depth=1
-git clone https://github.com/MinamiQuartet/minami-sign.git -b keys vendor/lineage-priv/keys
 
 # Hardware Repos
 git clone https://github.com/LineageOS/android_hardware_xiaomi.git -b lineage-24.0 hardware/xiaomi
