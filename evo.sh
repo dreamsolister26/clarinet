@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# repo init
-# repo init -u https://github.com/sweet-bullet/evolution_manifest.git -b cnb --git-lfs --depth=1
-
-# sync + remove dirty
-# /opt/crave/resync.sh
-# repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For fixing sync error
-
 # remove device source
 rm -rf device/xiaomi/earth kernel/xiaomi/earth vendor/xiaomi/earth
 rm -rf hardware/xiaomi hardware/mediatek device/mediatek/sepolicy_vndr
+
+# repo init
+repo init -u https://github.com/sweet-bullet/evolution_manifest.git -b cnb --git-lfs --depth=1
+
+# sync + remove dirty
+/opt/crave/resync.sh
+repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For fixing sync error
 
 # device source 
 git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b EvolutionX-17 device/xiaomi/earth
