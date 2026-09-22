@@ -20,6 +20,7 @@ export BUILD_HOSTNAME=sweet_bullet
 # build start
 . build/envsetup.sh
 lunch lineage_earth-cp2a-userdebug
+make installclean
 m evolution
 
 # Upload files to gofile
