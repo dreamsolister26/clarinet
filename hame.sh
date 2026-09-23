@@ -12,16 +12,15 @@ git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b In
 
 # patching build/soong
 cd build/soong
-wget https://raw.githubusercontent.com/dreamsolister26/clarinet/refs/heads/main/soong.patch && patch -p1 < soong.patch
-rm -f soong.patch && cd ../..
-
-# build start
-. build/envsetup.sh
+wget https://raw.githubusercontent.com/dreamsolister26/clarinet/refs/heads/main/soong.patch
+patch -p1 < soong.patch && rm -f soong.patch
+cd ../..
 
 export BUILD_USERNAME=yuuko
 export BUILD_HOSTNAME=minami
-export SOONG_NINJA=ninja
 
+# build start
+. build/envsetup.sh
 lunch infinity_earth-userdebug
 mka bacon
 
