@@ -16,11 +16,15 @@ wget https://raw.githubusercontent.com/dreamsolister26/clarinet/refs/heads/main/
 patch -p1 < soong.patch && rm -f soong.patch
 cd ../..
 
+# setup env
+. build/envsetup.sh
+
+# export
 export BUILD_USERNAME=yuuko
 export BUILD_HOSTNAME=minami
+export SOONG_NINJA=ninja
 
-# build start
-. build/envsetup.sh
+# start build !
 lunch infinity_earth-userdebug
 mka bacon
 
