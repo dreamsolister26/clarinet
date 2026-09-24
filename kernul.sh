@@ -12,7 +12,7 @@ if [ -d clang/ ]; then
     echo "Clang has been cloned, starting build..."
 else
     echo "Clang not found!. Starting cloning clang..."
-    git clone --depth=1 https://github.com/LineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b.git -b lineage-20 clang
+    git clone --depth=1 https://github.com/LineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b.git clang
     echo "Clang has been cloned, starting build...."
 fi
 
