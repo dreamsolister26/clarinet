@@ -3,7 +3,7 @@ name: Testing Build
 on:
   workflow_dispatch:
     inputs:
-      repository: { description: 'Repo', required: true, default: 'dreamsolister26/kernel_xiaomi_earth' }
+      repository: { description: 'Repo', required: true, default: 'MinamiQuartet/android_kernel_xiaomi_earth' }
       branch: { description: 'Branch', required: true, default: 'staging/lineage-24.0' }
       defconfig: { description: 'Defconfig', required: true, default: 'earth_defconfig' }
       zipname : { description: 'zip name', required: false, default: 'testing-again' }
@@ -51,7 +51,8 @@ jobs:
       run: |
         git clone https://github.com/HiroZukki/Anykernel3 Anykernel3
         if [ -f out/arch/arm64/boot/Image.gz-dtb ]; then
-          cp out/arch/arm64/boot/Image.gz-dtb Anykernel3/
+          cp out/arch/arm64/boot/Image.gz Anykernel3/
+          cp out/arch/arm64/boot/dts/mediatek/mt6768.dtb Anykernel3/dtb
           cd Anykernel3
           zip -r9 "../Anykernel3-${{ github.event.inputs.zipname }}-${{ env.BUILD_TIME }}-earth.zip" * -x '.git*'
         fi
@@ -64,4 +65,3 @@ jobs:
         path: |
           *.zip
           *.log
-          out/.config
