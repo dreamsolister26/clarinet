@@ -54,7 +54,7 @@ jobs:
           cp out/arch/arm64/boot/Image.gz Anykernel3/
           cp out/arch/arm64/boot/dts/mediatek/mt6768.dtb Anykernel3/dtb
           cd Anykernel3
-          zip -r9 "../Anykernel3-${{ github.event.inputs.zipname }}-${{ env.BUILD_TIME }}-earth.zip" * -x '.git*'
+          zip -r9 "../${{ github.event.inputs.zipname }}-${{ env.BUILD_TIME }}-earth.zip" * -x '.git*'
         fi
 
     - name: Upload Artifacts
