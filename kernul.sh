@@ -42,9 +42,10 @@ make -j$(nproc --all) ARCH=arm64 SUBARCH=arm64 O=out LLVM=1 LLVM_IAS=1
 	CONFIG_DEBUG_SECTION_MISMATCH=y
 	
 # Anykernel3
-if [ ! -f out/arch/arm64/boot/Image.gz-dtb ]; then
- cp out/arch/arm64/boot/Image.gz-dtb anykernel/
- cd anykernel
- zip -r9 "../Anykernel3-${ZIPNAME}-${TIMESTAMP}-${CODENAME}.zip" * -x '.git*'
- cd ..
+if [ -f out/arch/arm64/boot/Image.gz-dtb ]; then
+    cp out/arch/arm64/boot/Image.gz-dtb anykernel/
+    cd anykernel && zip -r9 "../Anykernel3-${ZIPNAME}-${TIMESTAMP}-${CODENAME}.zip" * -x '.git*'
+    cd ..
+else 
+    exit 1
 fi
