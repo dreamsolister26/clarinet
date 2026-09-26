@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# remove device source
-rm -rf device/xiaomi/earth kernel/xiaomi/earth vendor/xiaomi/earth
-rm -rf hardware/xiaomi hardware/mediatek device/mediatek/sepolicy_vndr
-
 # repo init
 repo init -u https://github.com/sweet-bullet/evolution_manifest.git -b cnb --git-lfs --depth=1
 
@@ -23,7 +19,6 @@ export SOONG_NINJA=ninja
 
 # start build
 lunch lineage_earth-cp2a-userdebug
-make installclean
 m evolution
 
 # Upload files to gofile
