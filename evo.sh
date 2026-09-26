@@ -10,14 +10,11 @@ repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For
 # device source 
 git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b EvolutionX-17 device/xiaomi/earth
 
+export BUILD_USERNAME=kumiko
+export BUILD_HOSTNAME=minami
+
 # build start
 . build/envsetup.sh
-
-export BUILD_USERNAME=zukki
-export BUILD_HOSTNAME=sweet_bullet
-export SOONG_NINJA=ninja
-
-# start build
 lunch lineage_earth-cp2a-userdebug
 m evolution
 
