@@ -2,7 +2,7 @@
 
 # Configuration and export
 KERNEL_REPO=https://github.com/MinamiQuartet/android_kernel_xiaomi_earth.git
-KERNEL_BRANCH=ksu-testing
+KERNEL_BRANCH=lineage-24.0
 CLANG_URL=https://github.com/dreamsolister26/clarinet/releases/download/16165221/clang-r614150.tar.gz
 
 export ZIPNAME="kernul"
