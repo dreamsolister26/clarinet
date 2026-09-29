@@ -5,7 +5,7 @@ KERNEL_REPO=https://github.com/MinamiQuartet/android_kernel_xiaomi_earth.git
 KERNEL_BRANCH=ksu-testing
 CLANG_URL=https://github.com/dreamsolister26/clarinet/releases/download/16165221/clang-r614150.tar.gz
 
-export ZIPNAME="test"
+export ZIPNAME="kernul"
 export TIMESTAMP="$(date +"%Y%m%d")-$(date +"%H%M%S")"
 export CODENAME="earth"
 export TZ="Asia/Jakarta"
