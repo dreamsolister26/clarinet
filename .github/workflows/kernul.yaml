@@ -2,7 +2,7 @@ name: Kotol kernul
 
 on:
   workflow_dispatch:
-      
+    
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,6 +12,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
       
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+           swap-size-gb: 12
+        
       - name: build kernel
         run: |
            curl -LSs "https://raw.githubusercontent.com/dreamsolister26/clarinet/refs/heads/main/kernul.sh" | bash
