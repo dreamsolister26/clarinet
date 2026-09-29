@@ -19,7 +19,7 @@ echo "kernel has been cloned"
 
 # Cloning clang
 mkdir -p clang
-wget $CLANG_URL -d clang/
+wget -q0- $CLANG_URL | tar -xz -C clang
 export PATH=$PWD/clang/bin:$PATH
 
 # Clone anykernel
