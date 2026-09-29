@@ -1,0 +1,27 @@
+name: Kotol kernul
+
+on:
+  workflow_dispatch:
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bookworm-slim
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: build kernel
+        run: |
+           curl -LSs "https://raw.githubusercontent.com/dreamsolister26/clarinet/refs/heads/main/kernul.sh" | bash
+      
+      - name: Upload build artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: Build-Result
+          path: |
+             ${{ github.workspace }}/kernel/*.zip
+             ${{ github.workspace }}/kernel/*.log
+          
