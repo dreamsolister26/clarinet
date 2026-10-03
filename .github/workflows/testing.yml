@@ -7,7 +7,6 @@ on:
       branch: { description: 'Branch', required: true, default: 'staging/lineage-24.0' }
       defconfig: { description: 'Defconfig', required: true, default: 'earth_defconfig' }
       zipname : { description: 'zip name', required: false, default: 'testing-again' }
-      clang : { description: 'Clang URL', required: true, default: 'https://github.com/dreamsolister26/clarinet/releases/download/15544236/clang-r596125.tar.gz' }
       
 jobs:
   build:
@@ -34,9 +33,8 @@ jobs:
         export TZ="Asia/Jakarta"
         echo "BUILD_TIME=$(date +"%Y%m%d")-$(date +"%H%M%S")" >> $GITHUB_ENV
         
-        # Download clang Clang 
-        mkdir clang
-        wget -qO- ${{ github.event.inputs.clang }} | tar -xz -C clang
+        # Download clang Clang
+        git clone https://github.com/LineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b clang --depth=1
         export PATH=$PWD/clang/bin:$PATH
         
         export ARCH=arm64
