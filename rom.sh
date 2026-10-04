@@ -1,34 +1,23 @@
 #!/bin/bash
 
 # repo init
-repo init -u https://github.com/crdroidandroid/android.git -b 17.0 --git-lfs --depth=1
-
-# Crave Sync + remove dirty
+repo init -u https://github.com/Lunaris-AOSP/android -b 16.2 --git-lfs --depth=1
 /opt/crave/resync.sh
-repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For fixing sync error
 
 # device source
-git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b crDroid-17 device/xiaomi/earth
+git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Lunaris-16.2 device/xiaomi/earth
 
 # Patching source
-cd build/soong
-curl -LSs "https://github.com/sweet-bullet/build_soong_evo/commit/47b4d25fbb8e1713f1304dc78f357a0d858946a2.patch" | git am
-cd ../..
-
-cd frameworks/base
-curl -LSs "https://github.com/eupho26/android_frameworks_base/commit/bf2b23d09bc6f5d2f1207895bcff075a823186f4.patch" | git am
-cd ../..
-
-cd packages/apps/crDroidSettings
-curl -LSs "https://github.com/eupho26/android_packages_apps_crDroidSettings/commit/f0e68b37e3705e8034e2b5cc53d3fc775a8ca1f6.patch" | git am
-cd ../../..
+rm -rf vendor/lineage
+git clone -b 16.2 vendor/lineage --depth=1
 
 export BUILD_USERNAME=eupho
 export BUILD_HOSTNAME=minami
 
 # build start
 . build/envsetup.sh
-brunch earth userdebug
+lunch lineage_earth-bp4a-userdebug
+mka bacon
 
 # Upload files to gofile
 echo "Upload to gofile will be started..."
