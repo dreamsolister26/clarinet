@@ -9,7 +9,7 @@ git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Lu
 
 # Patching source
 rm -rf vendor/lineage
-git clone -b 16.2 vendor/lineage --depth=1
+git clone https://github.com/dreamsolister26/vendor_lunaris.git -b 16.2 vendor/lineage --depth=1
 
 export BUILD_USERNAME=eupho
 export BUILD_HOSTNAME=minami
