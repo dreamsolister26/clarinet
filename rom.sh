@@ -1,7 +1,17 @@
 #!/bin/bash
 
 # Check secrets file
-source ".secrets"
+if [ -f "$HOME/.secrets" ]; then
+    source "$HOME/.secrets"
+else
+    echo "File .secrets not found in $HOME"
+fi
+
+if [ -f "$(pwd)/.secrets" ]; then
+    source "$(pwd)/.secrets"
+else
+    echo "File .secrets not found in $(pwd)"
+fi
 
 # remove device source
 rm -rf device/xiaomi/earth kernel/xiaomi/earth vendor/xiaomi/earth
