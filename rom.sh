@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Check secrets file
-source "$HOME/.secrets"
-source "/tmp/src/android/.secrets"
+source ".secrets"
 
 # remove device source
 rm -rf device/xiaomi/earth kernel/xiaomi/earth vendor/xiaomi/earth
