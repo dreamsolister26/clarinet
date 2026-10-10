@@ -16,7 +16,7 @@ curl -LSs "https://github.com/aobuta-prjkt/android_build_soong/commit/798709d705
 curl -LSs "https://github.com/aobuta-prjkt/android_build_soong/commit/01a631a4a9bcb308e26bcdf39382469392af5c22.patch" | git am
 cd ../..
 
-# patching frameworks/base
+# patching vendor/inf
 cd vendor/infinity
 curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/disable_blurs.patch" | git am
 cd ../..
