@@ -1,23 +1,14 @@
 #!/bin/bash
 
-source ".secrets"
-
-# remove device source
-rm -rf device/xiaomi/earth kernel/xiaomi/earth vendor/xiaomi/earth
-rm -rf hardware/mediatek hardware/xiaomi device/mediatek/sepolicy_vndr
-
-# setup git config
-git config --global url."https://${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
-
 # repo init
-repo init -u https://github.com/ShinkaiProject/shinkai_manifest.git -b heptakaideka --git-lfs --depth=1
+repo init -u https://github.com/ProjectInfinity-X/manifest.git -b 17 --git-lfs --depth=1
 
 # Crave Sync + remove dirty
 /opt/crave/resync.sh
 repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For fixing sync error
 
 # device source
-git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Shinkai-17 device/xiaomi/earth
+git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Infinity-17 device/xiaomi/earth
 
 # patching build/soong
 cd build/soong
@@ -26,8 +17,8 @@ curl -LSs "https://github.com/aobuta-prjkt/android_build_soong/commit/01a631a4a9
 cd ../..
 
 # patching frameworks/base
-cd frameworks/base
-curl -LSs "https://github.com/aobuta-prjkt/android_frameworks_base/commit/861936436049e8e1edf573e86c2e5aa834043c08.patch" | git am
+cd vendor/infinity
+curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/disable_blurs.patch" | git am
 cd ../..
 
 # setup build enviroment
@@ -41,14 +32,14 @@ export KBUILD_BUILD_HOST="kitauji_quartet"
 export SOONG_NINJA=ninja
 
 # starting build
-breakfast earth userdebug
-mka shinkai
+lunch infinity_earth-userdebug
+mka bacon
 
 # Upload files to gofile
 echo "Upload to gofile will be started..."
 if [ -f out/target/product/earth/*2026*.zip ]; then
     wget https://raw.githubusercontent.com/lordgaruda/GoFile-Upload/refs/heads/master/upload.sh
-    chmod +x upload.sh ; ./upload.sh out/target/product/earth/Shinkai*.zip
+    chmod +x upload.sh ; ./upload.sh out/target/product/earth/*2026*.zip
     echo "Upload Done!"
 else
     echo "No zip found!"
