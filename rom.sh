@@ -10,12 +10,11 @@ repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For
 # device source
 git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b crDroid-17 device/xiaomi/earth
 
-# patching build/soong
+# patching source
 cd build/soong
 curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/patch_soong.patch" | git am
 cd ../..
 
-# patching fwb
 cd frameworks/base
 curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/signal.patch" | git am
 cd ../..
