@@ -1,15 +1,24 @@
 #!/bin/bash
 
 # repo init
-repo init -u https://github.com/aobuta-project/android_manifest.git -b lineage-24.0 --git-lfs --depth=1
-
-# device source
-git clone https://github.com/MinamiQuartet/minami_manifest.git -b lineage-24.0 .repo/local_manifests
+repo init --depth=1 --no-repo-verify --git-lfs -u https://github.com/ProjectInfinity-X/manifest -b 17 -g default,-mips,-darwin,-notdefault
 
 # Crave Sync + remove dirty
 /opt/crave/resync.sh
 repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For fixing sync error
 
+# device source
+git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Infinity-17 device/xiaomi/earth
+
+# patch build/soong
+cd build/soong
+curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/disable_blurs.patch" | git am
+cd ../..
+
+# disable blur
+cd vendor/infinity
+curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/patch_soong.patch" | git am
+cd ../..
 # setup build enviroment
 . build/envsetup.sh
 
@@ -18,11 +27,9 @@ export BUILD_USERNAME=eupho
 export BUILD_HOSTNAME=minami
 export KBUILD_BUILD_USER="kumiko" 
 export KBUILD_BUILD_HOST="kitauji_quartet"
-export TARGET_INCLUDE_GRAMOPHONE=true
-export PERF_ANIM_OVERRIDE=true
 
 # starting build
-lunch lineage_earth-cp2a-userdebug
+lunch infinity_earth-userdebug
 mka bacon
 
 # Upload files to gofile
