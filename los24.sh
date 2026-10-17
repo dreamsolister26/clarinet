@@ -19,6 +19,7 @@ cd ../..
 cd vendor/infinity
 curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/patch_soong.patch" | git am
 cd ../..
+
 # setup build enviroment
 . build/envsetup.sh
 
