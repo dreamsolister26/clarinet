@@ -19,6 +19,7 @@ export BUILD_HOSTNAME=minami
 export KBUILD_BUILD_USER="kumiko" 
 export KBUILD_BUILD_HOST="kitauji_quartet"
 export TARGET_INCLUDE_GRAMOPHONE=true
+export PERF_ANIM_OVERRIDE=true
 
 # starting build
 lunch lineage_earth-cp2a-userdebug
