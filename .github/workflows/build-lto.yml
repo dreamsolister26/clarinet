@@ -1,18 +1,23 @@
-name: Testing Build
+name: Kernel Build 2nd (bakasu)
 
 on:
   workflow_dispatch:
     inputs:
       repository: { description: 'Repo', required: true, default: 'MinamiQuartet/android_kernel_xiaomi_earth' }
-      branch: { description: 'Branch', required: true, default: 'staging/lineage-24.0' }
+      branch: { description: 'Branch', required: true, default: '24.0-ksu' }
       defconfig: { description: 'Defconfig', required: true, default: 'earth_defconfig' }
-      zipname : { description: 'zip name', required: false, default: 'testing-again' }
-      
+      zipname : { description: 'zip name', required: false, default: '-' }
+      clang : { description: 'Clang URL', required: true, default: 'https://github.com/dreamsolister26/clarinet/releases/download/16464736/clang-r614150.tar.gz' }
+      kernelsu_branch: { description: 'KSU Branch', required: false, default: 'main' }
+      kernelsu_setup : { description: 'KSU Setup Link', required: false, default: 'https://raw.githubusercontent.com/Baka-SU/BakaSU/refs/heads/main/kernel/setup.sh' }
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    
+    - name: Cleanup
+      uses: rokibhasansagar/slimhub_actions@main
+      
     - uses: actions/checkout@v5
       with:
         repository: ${{ github.event.inputs.repository }}
@@ -33,14 +38,12 @@ jobs:
         export TZ="Asia/Jakarta"
         echo "BUILD_TIME=$(date +"%Y%m%d")-$(date +"%H%M%S")" >> $GITHUB_ENV
         
-        # Download clang Clang
-        git clone https://github.com/LineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b clang --depth=1
+        # Download clang Clang 
+        mkdir clang
+        wget -qO- ${{ github.event.inputs.clang }} | tar -xz -C clang
         export PATH=$PWD/clang/bin:$PATH
-
-        echo "CONFIG_KSU=y" >> arch/arm64/configs/earth_defconfig
-        echo "CONFIG_KSU_HACK_ARM64_BRANCH_LINK=y" >> arch/arm64/configs/earth_defconfig
-        curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/refs/heads/master/kernel/setup.sh" | bash -s master
         
+        curl -LSs "${{ github.event.inputs.kernelsu_setup }}" | bash -s ${{ github.event.inputs.kernelsu_branch }}
         export ARCH=arm64
         export KBUILD_BUILD_USER="kumiko"
         export KBUILD_BUILD_HOST="kitauji_quartet"
@@ -51,7 +54,7 @@ jobs:
 
     - name: Anykernel3
       run: |
-        git clone https://github.com/HiroZukki/Anykernel3 Anykernel3
+        git clone https://github.com/dreamsolister26/Anykernel3 Anykernel3
         if [ -f out/arch/arm64/boot/Image.gz-dtb ]; then
           cp out/arch/arm64/boot/Image.gz Anykernel3/
           cp out/arch/arm64/boot/dts/mediatek/mt6768.dtb Anykernel3/dtb
