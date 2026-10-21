@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # repo init
-repo init -u https://github.com/Lunaris-AOSP/android.git -b 16.2 --git-lfs --depth=1
+repo init -u https://github.com/aobuta-project/lunaris_manifest.git -b 16.2 --git-lfs --depth=1
 /opt/crave/resync.sh
 
 # device source
