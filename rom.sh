@@ -1,27 +1,23 @@
 #!/bin/bash
 
 # repo init
-repo init -u https://github.com/crdroidandroid/android.git -b 17.0 --git-lfs --no-clone-bundle --depth=1
+repo init --depth=1 --no-repo-verify --git-lfs -u https://github.com/ProjectInfinity-X/manifest -b 17 -g default,-mips,-darwin,-notdefault
 
 # Crave Sync + remove dirty
 /opt/crave/resync.sh
 repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle # For fixing sync error
 
 # device source
-git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b crDroid-17 device/xiaomi/earth
+git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Infinity-17 device/xiaomi/earth
 
 # patching source
 cd build/soong
-curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/patch_soong.patch" | git am
+curl -LSs "https://github.com/aobuta-prjkt/android_build_soong/commit/798709d705ee46dac76cdad4432fd0ad12918e8e.patch" | git am
 cd ../..
 
-cd frameworks/base
-curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/signal.patch" | git am
+cd vendor/infinity
+curl -LSs "https://github.com/eupho26/vendor_infinity/commit/0f2af36a78bcfca3e1b7f48b4e9f3225494580eb.patch" | git am
 cd ../..
-
-cd packages/apps/crDroidSettings
-curl -LSs "https://raw.githubusercontent.com/eupho26/krep_sekerip/refs/heads/main/maintainer.patch" | git am
-cd ../../..
 
 # setup build enviroment
 . build/envsetup.sh
@@ -33,7 +29,8 @@ export KBUILD_BUILD_USER="kumiko"
 export KBUILD_BUILD_HOST="kitauji_quartet"
 
 # starting build
-brunch earth userdebug
+lunch infinity_earth-userdebug
+mka bacon
 
 # Upload files to gofile
 echo "Upload to gofile will be started..."
