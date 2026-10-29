@@ -5,6 +5,7 @@ repo init -u https://github.com/aobuta-project/lumine_manifest.git -b camellia -
 
 # sync
 /opt/crave/resync.sh
+repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle
 
 # remove device source 
 rm -rf device/xiaomi/earth vendor/xiaomi/earth kernel/xiaomi/earth
@@ -12,6 +13,11 @@ rm -rf hardware/mediatek hardware/xiaomi device/mediatek/sepolicy_vndr
 
 # device source
 git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Lumine-17 device/xiaomi/earth
+
+# Patching source
+cd vendor/lumine
+curl -s "https://raw.githubusercontent.com/dreamsolister26/clarinet/refs/heads/main/0001-release-Disable-native-app-zygote-prototype-flags-in.patch" | git am
+cd ../..
 
 # setup build enviroment
 . build/envsetup.sh
