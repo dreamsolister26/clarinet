@@ -1,0 +1,39 @@
+From 841fe4609a7da2722010cbaef969eafca1c90c09 Mon Sep 17 00:00:00 2001
+From: Quince <quinceroms@gmail.com>
+Date: Thu, 29 Oct 2026 20:50:24 +0700
+Subject: [PATCH] release: Disable native app zygote prototype flags in cp2a
+
+The native app zygote prototype (android.os.native_app_zygote + android.os.native_framework_prototype) is unreliable across kernels. On kernels without CAP_CHECKPOINT_RESTORE (e.g. 4.14) the native app zygote child aborts during startup, killing every Chromium-based browser and WebView. On a device running kernel 5.10.252 - where the capability is available - the native path still fails even after the capability-loop guard and tmpfs sepolicy fixes, so the prototype is broken beyond the capability issue.
+
+Disabling both flags routes all isolated services through the mature Java app zygote path, which works on every kernel. Both flags are READ_ONLY, so DISABLED is baked in as a compile-time constant and the ActiveServices gate(Flags.nativeAppZygote() && r.mIsNativeIsolated) can never select the native path.
+
+Change-Id: I3350479062ad45be74d9b2ec97d94361d2360ff3
+Signed-off-by: Quince <quinceroms@gmail.com>
+
+diff --git a/release/aconfig/cp2a/android.os/native_app_zygote_flag_values.textproto b/release/aconfig/cp2a/android.os/native_app_zygote_flag_values.textproto
+new file mode 100644
+index 0000000..8777123
+--- /dev/null
++++ b/release/aconfig/cp2a/android.os/native_app_zygote_flag_values.textproto
+@@ -0,0 +1,6 @@
++flag_value {
++  package: "android.os"
++  name: "native_app_zygote"
++  state: DISABLED
++  permission: READ_ONLY
++}
+diff --git a/release/aconfig/cp2a/android.os/native_framework_prototype_flag_values.textproto b/release/aconfig/cp2a/android.os/native_framework_prototype_flag_values.textproto
+new file mode 100644
+index 0000000..25a32c1
+--- /dev/null
++++ b/release/aconfig/cp2a/android.os/native_framework_prototype_flag_values.textproto
+@@ -0,0 +1,6 @@
++flag_value {
++  package: "android.os"
++  name: "native_framework_prototype"
++  state: DISABLED
++  permission: READ_ONLY
++}
+-- 
+2.56.0
+
