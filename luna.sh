@@ -1,15 +1,17 @@
 #!/bin/bash
 
+# repo init
+repo init -u https://github.com/aobuta-project/lumine_manifest.git -b camellia --git-lfs --depth=1
+
+# sync
+/opt/crave/resync.sh
+
 # remove device source 
 rm -rf device/xiaomi/earth vendor/xiaomi/earth kernel/xiaomi/earth
 rm -rf hardware/mediatek hardware/xiaomi device/mediatek/sepolicy_vndr
 
-# repo init
-repo init -u https://github.com/aobuta-project/lunaris_manifest.git -b 16.2 --git-lfs --depth=1
-/opt/crave/resync.sh
-
 # device source
-git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Lunaris-16.2 device/xiaomi/earth
+git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Lumine-17 device/xiaomi/earth
 
 # setup build enviroment
 . build/envsetup.sh
@@ -21,8 +23,7 @@ export KBUILD_BUILD_USER="kumiko"
 export KBUILD_BUILD_HOST="kitauji_quartet"
 
 # starting build
-lunch lineage_earth-bp4a-userdebug
-make installclean
+lunch earth-cp2a-userdebug
 mka bacon
 
 # Upload files to gofile
