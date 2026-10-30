@@ -1,15 +1,16 @@
 #!/bin/bash
 
+# remove device source & staging source
+rm -rf device/xiaomi/earth vendor/xiaomi/earth kernel/xiaomi/earth
+rm -rf hardware/mediatek hardware/xiaomi device/mediatek/sepolicy_vndr
+rm -rf vendor/lumine
+
 # repo init
 repo init -u https://github.com/aobuta-project/lumine_manifest.git -b camellia --git-lfs --depth=1
 
 # sync
 /opt/crave/resync.sh
 repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle
-
-# remove device source 
-rm -rf device/xiaomi/earth vendor/xiaomi/earth kernel/xiaomi/earth
-rm -rf hardware/mediatek hardware/xiaomi device/mediatek/sepolicy_vndr
 
 # device source
 git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Lumine-17 device/xiaomi/earth
@@ -30,6 +31,7 @@ export KBUILD_BUILD_HOST="kitauji_quartet"
 
 # starting build
 lunch earth-cp2a-userdebug
+make installclean
 mka bacon
 
 # Upload files to gofile
