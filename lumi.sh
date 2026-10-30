@@ -10,7 +10,7 @@ repo init -u https://github.com/aobuta-project/lumine_manifest.git -b camellia -
 
 # sync
 /opt/crave/resync.sh
-repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle
+# repo sync -c --force-sync --force-remove-dirty --no-tags --no-clone-bundle
 
 # device source
 git clone https://github.com/MinamiQuartet/android_device_xiaomi_earth.git -b Lumine-17 device/xiaomi/earth
