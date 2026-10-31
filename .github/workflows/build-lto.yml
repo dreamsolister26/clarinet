@@ -7,7 +7,6 @@ on:
       branch: { description: 'Branch', required: true, default: '24.0-ksu' }
       defconfig: { description: 'Defconfig', required: true, default: 'earth_defconfig' }
       zipname : { description: 'zip name', required: false, default: '-' }
-      clang : { description: 'Clang URL', required: true, default: 'https://github.com/dreamsolister26/clarinet/releases/download/16464736/clang-r614150.tar.gz' }
       kernelsu_branch: { description: 'KSU Branch', required: false, default: 'main' }
       kernelsu_setup : { description: 'KSU Setup Link', required: false, default: 'https://raw.githubusercontent.com/Baka-SU/BakaSU/refs/heads/main/kernel/setup.sh' }
 
