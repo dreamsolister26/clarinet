@@ -37,7 +37,10 @@ jobs:
         
         # Download clang Clang 
         mkdir clang
-        wget -qO- ${{ github.event.inputs.clang }} | tar -xz -C clang
+        wget https://mirrors.edge.kernel.org/pub/tools/llvm/files/llvm-23.1.4-x86_64.tar.gz && tar -xzvf llvm-23.1.4-x86_64.tar.gz
+        mv llvm-23.1.4-x86_64 clang
+
+        # setup path
         export PATH=$PWD/clang/bin:$PATH
         
         curl -LSs "${{ github.event.inputs.kernelsu_setup }}" | bash -s ${{ github.event.inputs.kernelsu_branch }}
