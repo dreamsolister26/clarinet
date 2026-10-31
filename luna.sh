@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# remove device source 
+rm -rf device/xiaomi/earth vendor/xiaomi/earth kernel/xiaomi/earth
+rm -rf hardware/mediatek hardware/xiaomi device/mediatek/sepolicy_vndr
+
 # repo init
 repo init -u https://github.com/aobuta-project/lunaris_manifest.git -b 16.2 --git-lfs --depth=1
 /opt/crave/resync.sh
@@ -18,6 +22,7 @@ export KBUILD_BUILD_HOST="kitauji_quartet"
 
 # starting build
 lunch lineage_earth-bp4a-userdebug
+make installclean
 mka bacon
 
 # Upload files to gofile
