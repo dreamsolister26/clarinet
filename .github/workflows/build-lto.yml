@@ -1,19 +1,23 @@
-name: Kernel Build 2nd (bakasu)
+name: Kernel Build 2nd
 
 on:
   workflow_dispatch:
     inputs:
       repository: { description: 'Repo', required: true, default: 'MinamiQuartet/android_kernel_xiaomi_earth' }
-      branch: { description: 'Branch', required: true, default: '24.0-ksu' }
+      branch: { description: 'Branch', required: true, default: 'ksu-old' }
       defconfig: { description: 'Defconfig', required: true, default: 'earth_defconfig' }
       zipname : { description: 'zip name', required: false, default: '-' }
-      kernelsu_branch: { description: 'KSU Branch', required: false, default: 'main' }
-      kernelsu_setup : { description: 'KSU Setup Link', required: false, default: 'https://raw.githubusercontent.com/Baka-SU/BakaSU/refs/heads/main/kernel/setup.sh' }
+      clang : { description: 'Clang URL', required: true, default: 'https://github.com/dreamsolister26/clarinet/releases/download/16464736/clang-r614150.tar.gz' }
+      kernelsu_branch: { description: 'KSU Branch', required: false, default: 'master' }
+      kernelsu_setup : { description: 'KSU Setup Link', required: false, default: 'https://raw.githubusercontent.com/backslashxx/KernelSU/refs/heads/master/kernel/setup.sh' }
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    # - name: Cleanup
+    # uses: rokibhasansagar/slimhub_actions@main
+      
     - uses: actions/checkout@v5
       with:
         repository: ${{ github.event.inputs.repository }}
@@ -36,10 +40,7 @@ jobs:
         
         # Download clang Clang 
         mkdir clang
-        wget https://mirrors.edge.kernel.org/pub/tools/llvm/files/llvm-23.1.4-x86_64.tar.gz && tar -xzvf llvm-23.1.4-x86_64.tar.gz
-        mv llvm-23.1.4-x86_64 clang
-
-        # setup path
+        wget -qO- ${{ github.event.inputs.clang }} | tar -xz -C clang
         export PATH=$PWD/clang/bin:$PATH
         
         curl -LSs "${{ github.event.inputs.kernelsu_setup }}" | bash -s ${{ github.event.inputs.kernelsu_branch }}
@@ -55,8 +56,7 @@ jobs:
       run: |
         git clone https://github.com/dreamsolister26/Anykernel3 Anykernel3
         if [ -f out/arch/arm64/boot/Image.gz-dtb ]; then
-          cp out/arch/arm64/boot/Image.gz Anykernel3/
-          cp out/arch/arm64/boot/dts/mediatek/mt6768.dtb Anykernel3/dtb
+          cp out/arch/arm64/boot/Image.gz-dtb Anykernel3/
           cd Anykernel3
           zip -r9 "../${{ github.event.inputs.zipname }}-${{ env.BUILD_TIME }}-earth.zip" * -x '.git*'
         fi
