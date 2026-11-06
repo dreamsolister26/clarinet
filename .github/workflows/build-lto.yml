@@ -15,9 +15,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    # - name: Cleanup
-    # uses: rokibhasansagar/slimhub_actions@main
-      
     - uses: actions/checkout@v5
       with:
         repository: ${{ github.event.inputs.repository }}
@@ -30,7 +27,7 @@ jobs:
       with:
         swap-size-gb: 12
 
-    - name: Setup and Build
+    - name: Setup build enviroment
       run: |
         sudo apt-get update
         sudo apt install nano bc bison curl flex gcc git libc6-dev libssl-dev openssl python-is-python3 ssh wget zip zstd sudo make clang gcc-arm-linux-gnueabi software-properties-common build-essential libarchive-tools gcc-aarch64-linux-gnu -y && sudo apt install python3 -y && sudo apt install cpio -y && sudo apt install lld -y && sudo apt install llvm -y
@@ -38,11 +35,20 @@ jobs:
         export TZ="Asia/Tokyo"
         echo "BUILD_TIME=$(date +"%Y%m%d")-$(date +"%H%M%S")" >> $GITHUB_ENV
         
-        # Download clang Clang 
-        mkdir clang
-        wget -qO- ${{ github.event.inputs.clang }} | tar -xz -C clang
-        export PATH=$PWD/clang/bin:$PATH
-        
+    - name: Download LLVM Slim
+      run: |
+         mkdir -p clang && cd clang
+         wget https://mirrors.edge.kernel.org/pub/tools/llvm/files/llvm-23.1.5-x86_64.tar.gz && tar -xzvf llvm-23.1.5-x86_64.tar.gz && rm -rf llvm-23.1.5-x86_64.tar.gz
+         mv llvm-23.1.5-x86_64/* . && rm -rf llvm-23.1.5-x86_64
+
+         wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/mlgo-models.tar.gz
+         tar -xzvf mlgo-models.tar.gz && rm -rf mlgo-models.tar.gz
+
+         export PATH=$PWD/clang/bin:$PATH
+         clang --version
+
+    - name: Building kernel 
+      run: |
         curl -LSs "${{ github.event.inputs.kernelsu_setup }}" | bash -s ${{ github.event.inputs.kernelsu_branch }}
         export ARCH=arm64
         export KBUILD_BUILD_USER="kumiko"
@@ -56,7 +62,8 @@ jobs:
       run: |
         git clone https://github.com/dreamsolister26/Anykernel3 Anykernel3
         if [ -f out/arch/arm64/boot/Image.gz-dtb ]; then
-          cp out/arch/arm64/boot/Image.gz-dtb Anykernel3/
+          cp out/arch/arm64/boot/Image.gz Anykernel3/
+          cp out/arch/arm64/boot/dts/mediatek/mt6768.dtb Anykernel3/dtb
           cd Anykernel3
           zip -r9 "../${{ github.event.inputs.zipname }}-${{ env.BUILD_TIME }}-earth.zip" * -x '.git*'
         fi
