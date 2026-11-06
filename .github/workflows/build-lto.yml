@@ -43,7 +43,8 @@ jobs:
 
          wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/main/mlgo-models.tar.gz
          tar -xzvf mlgo-models.tar.gz && rm -rf mlgo-models.tar.gz
-
+         cd ..
+        
          export PATH=$PWD/clang/bin:$PATH
          clang --version
 
