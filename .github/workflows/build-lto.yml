@@ -56,15 +56,7 @@ jobs:
         export KBUILD_BUILD_HOST="kitauji_quartet"
 
         make O=out ARCH=arm64 ${{ github.event.inputs.defconfig }}
-        make -j$(nproc --all) ARCH=arm64 O=out LLVM=1 LLVM_IAS=1 \
-            CC="clang" \
-            AR="llvm-ar" \
-            NM="llvm-nm" \
-            LD="ld.lld" \
-            OBJCOPY="llvm-objcopy" \ 
-            OBJDUMP="llvm-objdump" \
-            STRIP="llvm-strip" \
-            CONFIG_DEBUG_SECTION_MISMATCH=y 2>&1 | tee compile.log || true
+        make -j$(nproc --all) ARCH=arm64 O=out LLVM=1 LLVM_IAS=1 CC="clang" AR="llvm-ar" NM="llvm-nm" LD="ld.lld" OBJCOPY="llvm-objcopy" OBJDUMP="llvm-objdump" STRIP="llvm-strip" CONFIG_DEBUG_SECTION_MISMATCH=y 2>&1 | tee compile.log || true
         
     - name: Anykernel3
       run: |
