@@ -54,11 +54,18 @@ jobs:
         export ARCH=arm64
         export KBUILD_BUILD_USER="kumiko"
         export KBUILD_BUILD_HOST="kitauji_quartet"
-        ARGS="O=out ARCH=arm64 CC=clang LD=ld.lld AR=llvm-ar NM=llvm-nm STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- LLVM=1 LLVM_IAS=1 CONFIG_DEBUG_SECTION_MISMATCH=y"
-        
-        make $ARGS ${{ github.event.inputs.defconfig }} 2>&1 | tee defconfig.log || true
-        make -j$(nproc) $ARGS 2>&1 | tee compile.log || true
 
+        make O=out ARCH=arm64 ${{ github.event.inputs.defconfig }}
+        make -j$(nproc --all) ARCH=arm64 O=out LLVM=1 LLVM_IAS=1 \
+            CC="clang" \
+            AR="llvm-ar" \
+            NM="llvm-nm" \
+            LD="ld.lld" \
+            OBJCOPY="llvm-objcopy" \ 
+            OBJDUMP="llvm-objdump" \
+            STRIP="llvm-strip" \
+            CONFIG_DEBUG_SECTION_MISMATCH=y 2>&1 | tee compile.log || true
+        
     - name: Anykernel3
       run: |
         git clone https://github.com/dreamsolister26/Anykernel3 Anykernel3
